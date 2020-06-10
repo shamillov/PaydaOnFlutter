@@ -11,21 +11,42 @@ class MainApp extends StatelessWidget {
         primaryColor: Colors.blue,
         textTheme: TextTheme(title: TextStyle(color: Colors.white))
       ),
-      home: BottomNavigation(),
+      home: HomePage(),
     );
   }
 }
 
-class BottomNavigation extends StatefulWidget {
-  BottomNavigation({Key key}) : super(key: key);
-
+class DonationTabs extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() {
-    return BottomNavigationState();
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Payda"),
+          centerTitle: true,
+          bottom: TabBar(
+            tabs: [
+              Tab(text: "Active",),
+              Tab(text: "Completed",)
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
-class BottomNavigationState extends State<BottomNavigation> {
+class HomePage extends StatefulWidget {
+  HomePage({Key key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return HomePageState();
+  }
+}
+
+class HomePageState extends State<HomePage> {
   int selectedIndex = 0;
 
   void onItemTapped(int index) {
@@ -33,6 +54,11 @@ class BottomNavigationState extends State<BottomNavigation> {
       selectedIndex = index;
     });
   }
+
+  final tabs = [
+    DonationPage(),
+    ProfilePage()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,17 +68,17 @@ class BottomNavigationState extends State<BottomNavigation> {
         centerTitle: true,
       ),
       body: Center(
-
+        child: tabs[selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text("Home")
+            title: Text("Home"),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            title: Text("Profile")
+            icon: Icon(Icons.person),
+            title: Text("Profile"),
           )
         ],
         currentIndex: selectedIndex,
@@ -63,12 +89,60 @@ class BottomNavigationState extends State<BottomNavigation> {
   }
 }
 
-class ActiveDonationsList extends StatelessWidget {
+class DonationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-
+    return PageView(
+      children: [
+        ActiveDonationPage(),
+        CompletedDonationPage()
+      ],
     );
   }
+}
+
+class ActiveDonationPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(
+          "Active Donation",
+          style: TextStyle(color: Colors.white, fontSize: 22, fontStyle: FontStyle.italic),),
+      ),
+      backgroundColor: Colors.blue,
+    );
+  }
+
+}
+
+class CompletedDonationPage  extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(
+          "Completed Donation",
+          style: TextStyle(color: Colors.white, fontSize: 22, fontStyle: FontStyle.italic),
+        ),
+      ),
+      backgroundColor: Colors.pink,
+    );
+  }
+}
+
+class ProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(
+          "Profile",
+          style: TextStyle(color: Colors.white, fontSize: 22, fontStyle: FontStyle.italic),),
+      ),
+      backgroundColor: Colors.green,
+    );
+  }
+
 }

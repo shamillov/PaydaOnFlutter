@@ -10,7 +10,8 @@ class ActiveDonationData {
   int donationAmount;
   int donationProgress;
 
-  ActiveDonationData({this.fundLogo,
+  ActiveDonationData({
+    this.fundLogo,
     this.fundName,
     this.fundLocation,
     this.images,
