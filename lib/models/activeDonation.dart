@@ -18,5 +18,5 @@ class ActiveDonationData {
     this.donationTitle,
     this.donationDescription,
     this.donationAmount,
-    this.donationProgress})
+    this.donationProgress});
 }
