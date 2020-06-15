@@ -69,6 +69,11 @@ class ActiveDonationList extends StatelessWidget {
                               margin: EdgeInsets.only(left: 8, right: 8),
                               child: RaisedButton(
                                 onPressed: (){
+                                  Scaffold.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Button is clicked"),
+                                    )
+                                  );
                                 },
                                 color: Colors.blue,
                                 textColor: Colors.white,
