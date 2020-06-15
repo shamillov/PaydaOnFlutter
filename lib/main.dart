@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:payda/models/testModel.dart';
 
 void main() => runApp(MainApp());
 
@@ -103,12 +104,93 @@ class ActiveDonationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(
-          "Active Donation",
-          style: TextStyle(color: Colors.white, fontSize: 22, fontStyle: FontStyle.italic),),
-      ),
-      backgroundColor: Colors.blue,
+      body: ActiveDonationList()
+    );
+  }
+}
+
+class ActiveDonationList extends StatelessWidget {
+
+  final list = <TestModel>[
+    TestModel("shamil", 24),
+    TestModel("uvais", 24),
+    TestModel("shamil", 24),
+    TestModel("uvais", 24)
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ListView.builder(
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          return Card(
+            margin: EdgeInsets.all(6),
+            child: Container(
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(4),
+                    child: Row(
+                      children: [
+                        Icon(Icons.person),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Название фонда"),
+                            Text("Локация", style: TextStyle(fontSize: 12),)
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 300,
+                    color: Colors.grey
+                  ),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text("131123", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                            Text("собрано", style: TextStyle(fontSize: 12),)
+                          ],
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 8, right: 8),
+                          child: RaisedButton(
+                            onPressed: (){},
+                            color: Colors.blue,
+                            textColor: Colors.white,
+                            child: Text("Помочь"),
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("1000000", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                            Text("цель", style: TextStyle(fontSize: 12))
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(),
+                  Center(
+                    child: Text("Название сбора", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  ),
+                  Container(
+                    child: Text("Описание сбора, описание сбора"),
+                  )
+                ],
+              ),
+            ),
+          );
+        }
+      )
     );
   }
 }
