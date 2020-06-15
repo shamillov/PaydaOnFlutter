@@ -16,27 +16,6 @@ class MainApp extends StatelessWidget {
   }
 }
 
-class DonationTabs extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Payda"),
-          centerTitle: true,
-          bottom: TabBar(
-            tabs: [
-              Tab(text: "Active",),
-              Tab(text: "Completed",)
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
 
@@ -63,10 +42,6 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Payda"),
-        centerTitle: true,
-      ),
       body: Center(
         child: tabs[selectedIndex],
       ),
@@ -93,11 +68,33 @@ class DonationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      children: [
-        ActiveDonationPage(),
-        CompletedDonationPage()
-      ],
+    return DonationTabs();
+  }
+}
+
+class DonationTabs extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Payda"),
+          centerTitle: true,
+          bottom: TabBar(
+            tabs: [
+              Tab(text: "Active",),
+              Tab(text: "Completed",)
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            ActiveDonationPage(),
+            CompletedDonationPage()
+          ],
+        ),
+      ),
     );
   }
 }
@@ -114,7 +111,6 @@ class ActiveDonationPage extends StatelessWidget {
       backgroundColor: Colors.blue,
     );
   }
-
 }
 
 class CompletedDonationPage  extends StatelessWidget {
@@ -136,6 +132,10 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Payda"),
+        centerTitle: true,
+      ),
       body: Center(
         child: Text(
           "Profile",
@@ -144,5 +144,4 @@ class ProfilePage extends StatelessWidget {
       backgroundColor: Colors.green,
     );
   }
-
 }
