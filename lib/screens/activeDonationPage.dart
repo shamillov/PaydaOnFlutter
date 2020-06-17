@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:payda/models/testModel.dart';
+import 'package:http/http.dart' as http;
+import 'package:payda/services/getActiveDonationService.dart';
 
 class ActiveDonationPage extends StatelessWidget {
   @override
@@ -11,7 +13,20 @@ class ActiveDonationPage extends StatelessWidget {
   }
 }
 
+Future<http.Response> fetchData() async {
+  var response = await http.get(GetActiveDonationService.baseUrl);
+
+  if(response.statusCode == 200) {
+    print("SUCCESSFUL");
+    return response;
+  } else {
+    return throw Exception("RESPONSE ERROR");
+  }
+}
+
 class ActiveDonationList extends StatelessWidget {
+
+  var response = fetchData();
 
   final list = <TestModel>[
     TestModel("shamil", 24),
@@ -36,7 +51,7 @@ class ActiveDonationList extends StatelessWidget {
                         child: Row(
                           children: [
                             Container(
-                              child: Icon(Icons.person),
+                              child: Icon(Icons.person, color: Colors.grey,),
                               margin: EdgeInsets.only(right: 4),
                             ),
                             Column(
@@ -72,9 +87,7 @@ class ActiveDonationList extends StatelessWidget {
                               child: RaisedButton(
                                 onPressed: (){
                                   Scaffold.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text("Button is clicked: $index"),
-                                    )
+                                      SnackBar(content: Text("Button is clicked: $index"))
                                   );
                                 },
                                 color: Colors.blue,
@@ -94,7 +107,12 @@ class ActiveDonationList extends StatelessWidget {
                       ),
                       Divider(),
                       Center(
-                        child: Text("Название сбора", style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.bold)),
+                      child: FutureBuilder<http.Response>(
+                        future: response,
+                        builder: (context, snapshot) {
+                          return Text(snapshot.data.body.toString());
+                        },
+                      ),
                       ),
                       Container(
                         margin: EdgeInsets.all(6),
