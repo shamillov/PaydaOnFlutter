@@ -1,9 +1,15 @@
-class TestModel {
-  String name;
-  int age;
+class Album {
+  final int userId;
+  final int id;
+  final String title;
 
-  TestModel(String name, int age) {
-    this.name = name;
-    this.age = age;
+  Album({this.userId, this.id, this.title});
+
+  factory Album.fromJson(Map<String, dynamic> json) {
+    return Album(
+      userId: json['userId'],
+      id: json['id'],
+      title: json['title'],
+    );
   }
 }

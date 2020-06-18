@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:payda/models/activeDonationData.dart';
 import 'package:payda/models/testModel.dart';
-import 'package:http/http.dart' as http;
 import 'package:payda/services/getActiveDonationService.dart';
 
 class ActiveDonationPage extends StatelessWidget {
@@ -13,33 +13,15 @@ class ActiveDonationPage extends StatelessWidget {
   }
 }
 
-Future<http.Response> fetchData() async {
-  var response = await http.get(GetActiveDonationService.baseUrl);
-
-  if(response.statusCode == 200) {
-    print("SUCCESSFUL");
-    return response;
-  } else {
-    return throw Exception("RESPONSE ERROR");
-  }
-}
-
 class ActiveDonationList extends StatelessWidget {
 
-  var response = fetchData();
-
-  final list = <TestModel>[
-    TestModel("shamil", 24),
-    TestModel("uvais", 24),
-    TestModel("shamil", 24),
-    TestModel("uvais", 24)
-  ];
+  var response = GetActiveDonationService.fetchActiveDonation();
 
   @override
   Widget build(BuildContext context) {
     return Container(
         child: ListView.builder(
-            itemCount: list.length,
+            itemCount: 5,
             itemBuilder: (context, index) {
               return Card(
                 margin: EdgeInsets.all(6),
@@ -107,12 +89,16 @@ class ActiveDonationList extends StatelessWidget {
                       ),
                       Divider(),
                       Center(
-                      child: FutureBuilder<http.Response>(
-                        future: response,
-                        builder: (context, snapshot) {
-                          return Text(snapshot.data.body.toString());
-                        },
-                      ),
+                        child: FutureBuilder<List<ActiveDonationData>>(
+                          future: response,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(snapshot.data[index].donationTitle);
+                            } else {
+                              return Text("Название фонда");
+                            }
+                            },
+                        ),
                       ),
                       Container(
                         margin: EdgeInsets.all(6),
