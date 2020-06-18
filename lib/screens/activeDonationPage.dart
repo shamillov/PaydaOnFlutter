@@ -1,27 +1,37 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:payda/models/activeDonationData.dart';
-import 'package:payda/models/testModel.dart';
 import 'package:payda/services/getActiveDonationService.dart';
 
 class ActiveDonationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ActiveDonationList()
+        body: Container(
+          child: FutureBuilder<List<ActiveDonationData>>(
+            future: GetActiveDonationService.fetchActiveDonation(),
+            builder: (context, snapshot) {
+              return snapshot.hasData
+                  ? ActiveDonationList(donationList: snapshot.data)
+                  : Center(child: CircularProgressIndicator());
+            },
+          ),
+        )
     );
   }
 }
 
 class ActiveDonationList extends StatelessWidget {
 
-  var response = GetActiveDonationService.fetchActiveDonation();
+  ActiveDonationList({Key key, this.donationList}) : super(key: key);
+
+  List<ActiveDonationData> donationList;
 
   @override
   Widget build(BuildContext context) {
     return Container(
         child: ListView.builder(
-            itemCount: 5,
+            itemCount: donationList.length,
             itemBuilder: (context, index) {
               return Card(
                 margin: EdgeInsets.all(6),
@@ -60,7 +70,10 @@ class ActiveDonationList extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text("131123", style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.bold)),
+                                Text(
+                                    donationList[index].donationProgress.toInt().toString(),
+                                    style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.bold)
+                                ),
                                 Text("собрано", style: TextStyle(fontSize: 12, color: Colors.black54))
                               ],
                             ),
@@ -80,7 +93,10 @@ class ActiveDonationList extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("1000000", style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.bold)),
+                                Text(
+                                    donationList[index].donationAmount.toInt().toString(),
+                                    style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.bold)
+                                ),
                                 Text("цель", style: TextStyle(fontSize: 12, color: Colors.black54))
                               ],
                             ),
@@ -89,20 +105,14 @@ class ActiveDonationList extends StatelessWidget {
                       ),
                       Divider(),
                       Center(
-                        child: FutureBuilder<List<ActiveDonationData>>(
-                          future: response,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return Text(snapshot.data[index].donationTitle);
-                            } else {
-                              return Text("Название фонда");
-                            }
-                            },
+                        child: Text(
+                            donationList[index].donationTitle,
+                            style: TextStyle(fontSize: 18, color: Colors.black87, fontWeight: FontWeight.bold)
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.all(6),
-                        child: Text("Описание сбора, описание сбора"),
+                        child: Text(donationList[index].donationDescription),
                       )
                     ],
                   ),

@@ -8,7 +8,7 @@ class GetActiveDonationService {
   static const baseUrl = "http://paydatest-env.eba-rjmpfuvm.us-east-2.elasticbeanstalk.com/";
 
   static Future<List<ActiveDonationData>> fetchActiveDonation() async {
-    var response = await http.get(baseUrl + "api/fees/1");
+    var response = await http.get(baseUrl + "api/fees");
 
     if(response.statusCode == 200) {
       print("SUCCESSFUL");
