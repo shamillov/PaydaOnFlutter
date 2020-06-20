@@ -11,10 +11,8 @@ class GetActiveDonationService {
     var response = await http.get(baseUrl + "api/fees");
 
     if(response.statusCode == 200) {
-      print("SUCCESSFUL");
       return compute(parseData, response.body);
     } else {
-      print("FAIL");
       return throw Exception("Response fail");
     }
   }

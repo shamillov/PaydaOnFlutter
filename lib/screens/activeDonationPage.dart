@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:payda/models/activeDonationData.dart';
@@ -8,24 +9,28 @@ class ActiveDonationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          child: FutureBuilder<List<ActiveDonationData>>(
-            future: GetActiveDonationService.fetchActiveDonation(),
-            builder: (context, snapshot) {
-              return snapshot.hasData
-                  ? ActiveDonationList(donationList: snapshot.data)
-                  : Center(child: CircularProgressIndicator());
-            },
-          ),
-        )
-    );
+      child: FutureBuilder<List<ActiveDonationData>>(
+        future: GetActiveDonationService.fetchActiveDonation(),
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? _ActiveDonationList(donationList: snapshot.data)
+              : Center(child: CircularProgressIndicator());
+        },
+      ),
+    ));
   }
 }
 
-class ActiveDonationList extends StatelessWidget {
-
-  ActiveDonationList({Key key, this.donationList}) : super(key: key);
+class _ActiveDonationList extends StatelessWidget {
+  _ActiveDonationList({Key key, this.donationList}) : super(key: key);
 
   List<ActiveDonationData> donationList;
+
+  List<String> images = [
+    "https://bobak.ru/wp-content/gallery/oboi-800x600/wallpaper800_11.jpg",
+    "https://bobak.ru/wp-content/gallery/oboi-800x600/wallpaper800_13.jpg",
+    "https://bobak.ru/wp-content/gallery/oboi-800x600/wallpaper800_14.jpg"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +48,10 @@ class ActiveDonationList extends StatelessWidget {
                         child: Row(
                           children: [
                             Container(
-                              child: Icon(Icons.person, color: Colors.grey,),
+                              child: Icon(
+                                Icons.person,
+                                color: Colors.grey,
+                              ),
                               margin: EdgeInsets.only(right: 4),
                             ),
                             Column(
@@ -54,13 +62,14 @@ class ActiveDonationList extends StatelessWidget {
                               ],
                             ),
                             Spacer(),
-                            Align(alignment: Alignment.centerRight, child: Icon(Icons.reply, color: Colors.grey))
+                            Align(
+                                alignment: Alignment.centerRight,
+                                child: Icon(Icons.reply, color: Colors.grey)),
                           ],
                         ),
                       ),
                       Container(
-                          height: 300,
-                          color: Colors.grey
+                        child: _ImageSlider(images: images),
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 6),
@@ -71,19 +80,27 @@ class ActiveDonationList extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                    donationList[index].donationProgress.toInt().toString(),
-                                    style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.bold)
-                                ),
+                                    donationList[index]
+                                        .donationProgress
+                                        .toInt()
+                                        .toString(),
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.bold)),
                                 Text("собрано", style: TextStyle(fontSize: 12, color: Colors.black54))
                               ],
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 10, right: 10),
                               child: RaisedButton(
-                                onPressed: (){
-                                  Scaffold.of(context).showSnackBar(
-                                      SnackBar(content: Text("Button is clicked: $index"))
-                                  );
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                ),
+                                onPressed: () {
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                      content:
+                                          Text("Button is clicked: $index")));
                                 },
                                 color: Colors.blue,
                                 textColor: Colors.white,
@@ -94,9 +111,14 @@ class ActiveDonationList extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                    donationList[index].donationAmount.toInt().toString(),
-                                    style: TextStyle(fontSize: 18, color: Colors.black54, fontWeight: FontWeight.bold)
-                                ),
+                                    donationList[index]
+                                        .donationAmount
+                                        .toInt()
+                                        .toString(),
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.bold)),
                                 Text("цель", style: TextStyle(fontSize: 12, color: Colors.black54))
                               ],
                             ),
@@ -105,10 +127,11 @@ class ActiveDonationList extends StatelessWidget {
                       ),
                       Divider(),
                       Center(
-                        child: Text(
-                            donationList[index].donationTitle,
-                            style: TextStyle(fontSize: 18, color: Colors.black87, fontWeight: FontWeight.bold)
-                        ),
+                        child: Text(donationList[index].donationTitle,
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black87,
+                                fontWeight: FontWeight.bold)),
                       ),
                       Container(
                         margin: EdgeInsets.all(6),
@@ -118,8 +141,26 @@ class ActiveDonationList extends StatelessWidget {
                   ),
                 ),
               );
-            }
-        )
-    );
+            }));
+  }
+}
+
+class _ImageSlider extends StatelessWidget {
+  _ImageSlider({Key key, this.images}) : super(key: key);
+
+  List<String> images;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: CarouselSlider(
+          options: CarouselOptions(
+            height: 300,
+            viewportFraction: 1.0,
+          ),
+          items: images.map((item) => Container(
+            child: Center(
+                child: Image.network(item, fit: BoxFit.cover, width: 1000,)))).toList(),
+    ));
   }
 }
