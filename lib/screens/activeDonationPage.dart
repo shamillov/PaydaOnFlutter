@@ -9,12 +9,12 @@ class ActiveDonationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      child: FutureBuilder<List<ActiveDonationData>>(
-        future: GetActiveDonationService.fetchActiveDonation(),
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? _ActiveDonationList(donationList: snapshot.data)
-              : Center(child: CircularProgressIndicator());
+          child: FutureBuilder<List<ActiveDonationData>>(
+            future: GetActiveDonationService.fetchActiveDonation(),
+            builder: (context, snapshot) {
+              return snapshot.hasData
+                  ? _ActiveDonationList(donationList: snapshot.data)
+                  : Center(child: CircularProgressIndicator());
         },
       ),
     ));
@@ -29,7 +29,8 @@ class _ActiveDonationList extends StatelessWidget {
   List<String> images = [
     "https://bobak.ru/wp-content/gallery/oboi-800x600/wallpaper800_11.jpg",
     "https://bobak.ru/wp-content/gallery/oboi-800x600/wallpaper800_13.jpg",
-    "https://bobak.ru/wp-content/gallery/oboi-800x600/wallpaper800_14.jpg"
+    "https://bobak.ru/wp-content/gallery/oboi-800x600/wallpaper800_14.jpg",
+    "https://bobak.ru/wp-content/gallery/oboi-800x600/wallpaper800_15.jpg"
   ];
 
   @override
@@ -64,9 +65,18 @@ class _ActiveDonationList extends StatelessWidget {
                             Spacer(),
                             Align(
                                 alignment: Alignment.centerRight,
-                                child: Icon(Icons.reply, color: Colors.grey)),
-                          ],
-                        ),
+                                child: IconButton(
+                                  constraints: BoxConstraints(minWidth: 10, minHeight: 10),
+                                  icon: Icon(Icons.reply, color: Colors.grey),
+                                  onPressed: (){
+                                    Scaffold.of(context).showSnackBar(
+                                      SnackBar(content: Text("Share button"))
+                                    );
+                                  },
+                                )
+                            )
+                          ]
+                        )
                       ),
                       Container(
                         child: _ImageSlider(images: images),

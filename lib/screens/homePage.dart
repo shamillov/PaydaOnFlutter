@@ -9,11 +9,11 @@ class HomePage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return HomePageState();
+    return _HomePageState();
   }
 }
 
-class HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> {
   int selectedIndex = 0;
 
   void onItemTapped(int index) {
@@ -23,7 +23,7 @@ class HomePageState extends State<HomePage> {
   }
 
   final tabs = [
-    DonationPage(),
+    _DonationPage(),
     ProfilePage()
   ];
 
@@ -52,15 +52,15 @@ class HomePageState extends State<HomePage> {
   }
 }
 
-class DonationPage extends StatelessWidget {
+class _DonationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DonationTabs();
+    return _DonationTabs();
   }
 }
 
-class DonationTabs extends StatelessWidget {
+class _DonationTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

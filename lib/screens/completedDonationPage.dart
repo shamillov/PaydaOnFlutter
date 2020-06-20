@@ -5,12 +5,12 @@ class CompletedDonationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CompletedDonationList(),
+      body: _CompletedDonationList(),
     );
   }
 }
 
-class CompletedDonationList extends StatelessWidget {
+class _CompletedDonationList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
